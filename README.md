@@ -8,7 +8,7 @@ The purpose of this project was to build a responsive and professional personal 
 
 - HTML, CSS, and JavaScript fundamentals for static web development
 - Responsive design principles for mobile and desktop optimization
-- Static site hosting using Cloudflare Pages
+- Site hosting using Cloudflare Pages & connected to this GitHub repository for updates & changes
 - DNS and domain management with Cloudflare DNS
 - Git-based deployment workflows (CI/CD)
 
