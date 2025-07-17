@@ -27,4 +27,5 @@ The purpose of this project was to build a responsive and professional personal 
 <img width="1288" height="1185" alt="cloudflareDNS" src="https://github.com/user-attachments/assets/e98394df-150a-401a-9ef8-fd010e4249e1" />
 
 *Ref 3: Cloudflare Pages Deployment*
-<img width="864" height="423" alt="cloudflarePages" src="https://github.com/user-attachments/assets/e5ed35c6-8431-45ca-86ab-35b0c38475a4" />
+<img width="881" height="426" alt="pwebsite" src="https://github.com/user-attachments/assets/0eace19c-5061-4ec9-a661-072e19f76114" />
+
