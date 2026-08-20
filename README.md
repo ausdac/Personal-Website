@@ -21,7 +21,7 @@ The purpose of this project was to build a responsive and professional personal 
 ## Steps
 
 *Ref 1: Homepage Layout*
-<img width="1368" height="1135" alt="landingPage" src="https://github.com/user-attachments/assets/d682b5be-7c69-4d90-9183-8f41e6e0c33a" />
+<img width="1145" height="769" alt="image" src="https://github.com/user-attachments/assets/4393b08e-1271-404a-8d94-f4e9e9813c4f" />
 
 *Ref 2: Tools and Technologies*
 <img width="1288" height="1185" alt="cloudflareDNS" src="https://github.com/user-attachments/assets/e98394df-150a-401a-9ef8-fd010e4249e1" />
