@@ -1,366 +1,527 @@
 <!DOCTYPE html>
-<html lang="en" class="bg-gray-950 text-gray-100 scroll-smooth">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Austin Dachel | Portfolio</title>
-  <!-- Inter font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-  <!-- Tailwind CSS CDN -->
-  <script defer src="https://cdn.tailwindcss.com"></script>
-  <style>
-    html { font-family: 'Inter', sans-serif; }
-    /* Scanline effect */
-    .scanlines {
-      position: relative;
-      overflow: hidden;
-    }
-    .scanlines::before {
-      content: "";
-      pointer-events: none;
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: repeating-linear-gradient(
-        to bottom,
-        rgba(0,255,255,0.04) 0px,
-        rgba(0,255,255,0.04) 1px,
-        transparent 1.5px,
-        transparent 4px
-      );
-      z-index: 2;
-      mix-blend-mode: lighten;
-      animation: scanline-move 4s linear infinite;
-    }
-    @keyframes scanline-move {
-      0% { background-position-y: 0; }
-      100% { background-position-y: 4px; }
-    }
-    /* Terminal font */
-    .terminal-font {
-      font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
-      letter-spacing: 0.01em;
-    }
-    /* Neon border */
-    .neon-border {
-      border: 2px solid #0ff;
-      box-shadow: 0 0 8px #0ff, 0 0 16px #0ff2;
-    }
-    /* Card hover effect */
-    .project-card:hover {
-      transform: translateY(-4px) scale(1.03);
-      box-shadow: 0 8px 32px 0 #0ff4, 0 1.5px 8px 0 #0ff2;
-      border-color: #0ff;
-    }
-    /* Accessibility: focus ring */
-    .focus-ring:focus {
-      outline: 2px solid #0ff;
-      outline-offset: 2px;
-    }
-    /* Hide scrollbars for code block */
-    .hide-scrollbar::-webkit-scrollbar { display: none; }
-    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    /* Neon glow pulse effect */
-    .neon-pulse {
-      color: #0ff;
-      text-shadow:
-        0 0 8px rgb(41, 82, 82),
-        0 0 16px #0ff,
-        0 0 32px #0ff2;
-      animation: neonPulse 2s infinite alternate;
-    }
-    @keyframes neonPulse {
-      0% {
-        text-shadow:
-          0 0 8px rgb(25, 105, 105),
-          0 0 16px #0ff,
-          0 0 32px #0ff2;
-      }
-      100% {
-        text-shadow:
-          0 0 16px #0ff,
-          0 0 32px #0ff,
-          0 0 64px #0ff4;
-      }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Austin Dachel — Linux &amp; Network Systems Engineer</title>
+<meta name="description" content="Austin Dachel — Linux and network systems engineer moving into cloud and DevSecOps. Infrastructure, automation, and security." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg: #0c0f14;
+    --surface: #12161f;
+    --surface-2: #171c27;
+    --border: #242a38;
+    --border-soft: #1b202c;
+    --text: #edeff4;
+    --text-muted: #8c93a6;
+    --text-dim: #5b6272;
+    --accent: #e3a857;
+    --accent-soft: #4a3c26;
+    --status: #6fcf97;
+    --yaml-key: #7fb3d5;
+    --yaml-comment: #5b6272;
+    --radius: 7px;
+    --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --max: 1080px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--bg) 0%, var(--bg) 100%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 40px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 40px);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; }
+  .skip-link{
+    position:absolute; left:-999px; top:auto;
+    background:var(--accent); color:#151007; padding:.6rem 1rem; border-radius:4px; z-index:200;
+  }
+  .skip-link:focus{ left:1rem; top:1rem; }
+
+  :focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  .wrap{ max-width: var(--max); margin: 0 auto; padding: 0 1.5rem; }
+
+  /* ---------- status bar ---------- */
+  .statusbar{
+    position: sticky; top:0; z-index: 100;
+    background: rgba(12,15,20,0.9);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--border-soft);
+  }
+  .statusbar .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    height: 52px;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+  }
+  .brand{
+    font-weight:600; letter-spacing:0.02em; color: var(--text);
+    text-decoration:none; font-family: var(--mono); font-size:0.85rem;
+  }
+  .status-right{ display:flex; align-items:center; gap:1.1rem; color: var(--text-muted); }
+  .status-dot{
+    display:inline-block; width:7px; height:7px; border-radius:50%;
+    background: var(--status); box-shadow: 0 0 0 3px rgba(111,207,151,0.15);
+    margin-right:.45rem; flex-shrink:0;
+  }
+  .status-available{ display:flex; align-items:center; color: var(--text-muted); }
+  #localtime{ color: var(--text-dim); }
+
+  nav.primary-nav{ display:flex; gap:1.4rem; }
+  nav.primary-nav a{
+    text-decoration:none; color: var(--text-muted); font-weight:500;
+    transition: color .15s ease;
+  }
+  nav.primary-nav a:hover{ color: var(--accent); }
+
+  #nav-toggle{
+    display:none; background:none; border:1px solid var(--border); border-radius:5px;
+    width:36px; height:32px; align-items:center; justify-content:center; cursor:pointer;
+  }
+  #nav-toggle span, #nav-toggle::before, #nav-toggle::after{
+    content:""; display:block; width:16px; height:2px; background: var(--text-muted);
+    margin: 3px auto;
+  }
+  #mobile-menu{ display:none; }
+  #mobile-menu.open{
+    display:flex; flex-direction:column; gap:0; border-top:1px solid var(--border-soft);
+    background: var(--surface);
+  }
+  #mobile-menu a{
+    padding: .85rem 1.5rem; text-decoration:none; color: var(--text-muted);
+    border-bottom: 1px solid var(--border-soft); font-family: var(--mono); font-size:0.85rem;
+  }
+
+  @media (max-width: 760px){
+    nav.primary-nav{ display:none; }
+    .status-available{ display:none; }
+    #nav-toggle{ display:flex; }
+  }
+
+  section{ padding: 4.5rem 0; }
+  section + section{ border-top: 1px solid var(--border-soft); }
+
+  .eyebrow{
+    font-family: var(--mono); font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase;
+    color: var(--accent); margin: 0 0 .75rem;
+  }
+  h2.section-title{
+    font-size: 1.5rem; margin: 0 0 2.25rem; font-weight:700; letter-spacing:-0.01em;
+  }
+
+  /* ---------- reveal ---------- */
+  .reveal{ opacity:0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .reveal.in{ opacity:1; transform:none; }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding: 4rem 0 4.5rem;
+    display:grid; grid-template-columns: 1.25fr 0.9fr; gap: 3rem; align-items:center;
+  }
+  @media (max-width: 860px){ .hero{ grid-template-columns:1fr; gap:2.5rem; } }
+
+  .hero h1{
+    font-size: clamp(2.1rem, 4.4vw, 3.15rem);
+    line-height:1.08; margin: 0 0 1rem; font-weight:700; letter-spacing:-0.015em;
+  }
+  .hero .role{
+    font-family: var(--mono); color: var(--accent); font-size:1.05rem; margin: 0 0 1.25rem;
+  }
+  .hero p.pitch{
+    color: var(--text-muted); font-size:1.05rem; max-width: 44ch; margin: 0 0 2rem;
+  }
+  .btn-row{ display:flex; gap: .9rem; flex-wrap:wrap; }
+  .btn{
+    display:inline-flex; align-items:center; gap:.5rem;
+    padding: .75rem 1.3rem; border-radius: var(--radius); font-weight:600; font-size:0.92rem;
+    text-decoration:none; border:1px solid transparent; transition: all .15s ease;
+    font-family: var(--sans);
+  }
+  .btn-primary{ background: var(--accent); color:#191309; }
+  .btn-primary:hover{ background:#ecb96e; }
+  .btn-secondary{ border-color: var(--border); color: var(--text); background: var(--surface); }
+  .btn-secondary:hover{ border-color: var(--accent); color: var(--accent); }
+
+  /* ---------- spec card ---------- */
+  .spec-card{
+    background: var(--surface); border:1px solid var(--border); border-radius: 10px;
+    overflow:hidden;
+  }
+  .spec-photo{
+    width:100%; aspect-ratio: 4/3; object-fit:cover; display:block;
+    filter: grayscale(15%) contrast(1.02);
+    border-bottom: 1px solid var(--border);
+  }
+  .spec-rows{ font-family: var(--mono); font-size:0.82rem; }
+  .spec-row{
+    display:flex; justify-content:space-between; gap:1rem;
+    padding: .65rem 1.1rem; border-bottom: 1px solid var(--border-soft);
+  }
+  .spec-row:last-child{ border-bottom:none; }
+  .spec-row .k{ color: var(--text-dim); }
+  .spec-row .v{ color: var(--text); text-align:right; }
+  .spec-row .v.status{ color: var(--status); display:flex; align-items:center; gap:.4rem; justify-content:flex-end; }
+
+  /* ---------- experience ---------- */
+  .job{
+    border:1px solid var(--border); border-radius: var(--radius); background: var(--surface);
+    padding: 1.6rem 1.75rem; margin-bottom: 1.25rem;
+  }
+  .job:last-child{ margin-bottom:0; }
+  .job-head{
+    display:flex; flex-wrap:wrap; justify-content:space-between; align-items:baseline; gap:.5rem 1.5rem;
+    margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border);
+  }
+  .job-head h3{ margin:0; font-size:1.08rem; font-weight:700; }
+  .job-head .company{ color: var(--accent); font-weight:600; }
+  .job-head .dates{
+    font-family: var(--mono); font-size:0.8rem; color: var(--text-dim); white-space:nowrap;
+  }
+  .job ul{ margin:0; padding-left: 1.2rem; color: var(--text-muted); }
+  .job li{ margin-bottom: .5rem; }
+  .job li:last-child{ margin-bottom:0; }
+  .placeholder{ color: var(--accent); font-style: normal; }
+
+  /* ---------- skills / yaml block ---------- */
+  .yaml-card{
+    position:relative; border:1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface); overflow:hidden;
+  }
+  .yaml-tab{
+    display:inline-block; font-family: var(--mono); font-size:0.75rem; color: var(--text-dim);
+    background: var(--surface-2); padding: .5rem 1rem; border-bottom:1px solid var(--border);
+    border-right:1px solid var(--border); border-top-left-radius: var(--radius);
+  }
+  pre.yaml{
+    margin:0; padding: 1.5rem 1.75rem 1.85rem; overflow-x:auto;
+    font-family: var(--mono); font-size:0.86rem; line-height:1.8; color: var(--text);
+  }
+  .yk{ color: var(--yaml-key); }
+  .yc{ color: var(--yaml-comment); }
+  .ya{ color: var(--accent); }
+
+  /* ---------- projects ---------- */
+  .project-grid{
+    display:grid; grid-template-columns: repeat(2, 1fr); gap: 1.1rem;
+  }
+  @media (max-width: 700px){ .project-grid{ grid-template-columns: 1fr; } }
+  .project{
+    border:1px solid var(--border); border-radius: var(--radius); background: var(--surface);
+    padding: 1.5rem 1.6rem; transition: border-color .15s ease, transform .15s ease;
+  }
+  .project:hover{ border-color: var(--accent-soft); transform: translateY(-2px); }
+  .project h3{ margin:0 0 .55rem; font-size:1.02rem; }
+  .project p{ margin: 0 0 1rem; color: var(--text-muted); font-size:0.93rem; }
+  .tags{ display:flex; flex-wrap:wrap; gap: .4rem; margin-bottom: .9rem; }
+  .tag{
+    font-family: var(--mono); font-size:0.72rem; color: var(--text-muted);
+    border:1px solid var(--border); border-radius: 4px; padding: .2rem .5rem;
+  }
+  .project-note{
+    font-family: var(--mono); font-size:0.74rem; color: var(--text-dim);
+    display:flex; align-items:center; gap:.4rem;
+  }
+
+  /* ---------- education ---------- */
+  .edu-item{
+    display:flex; justify-content:space-between; gap:1.5rem; flex-wrap:wrap;
+    padding: 1.1rem 0; border-bottom: 1px solid var(--border-soft);
+  }
+  .edu-item:last-child{ border-bottom:none; }
+  .edu-item h3{ margin:0 0 .25rem; font-size:1rem; }
+  .edu-item .school{ color: var(--text-muted); font-size:0.92rem; }
+  .edu-item .when{ font-family: var(--mono); font-size:0.8rem; color: var(--text-dim); white-space:nowrap; }
+
+  /* ---------- contact / footer ---------- */
+  .contact-row{
+    display:flex; flex-wrap:wrap; gap: .9rem;
+  }
+  .contact-link{
+    display:flex; align-items:center; gap:.6rem;
+    border:1px solid var(--border); border-radius: var(--radius); padding: .8rem 1.2rem;
+    text-decoration:none; color: var(--text); font-weight:500; font-size:0.92rem;
+    background: var(--surface); transition: border-color .15s ease, color .15s ease;
+  }
+  .contact-link:hover{ border-color: var(--accent); color: var(--accent); }
+  .contact-link svg{ width:18px; height:18px; flex-shrink:0; }
+
+  footer{ padding: 2.5rem 0; text-align:center; color: var(--text-dim); font-family: var(--mono); font-size:0.78rem; }
+</style>
 </head>
-<body class="bg-gray-950 text-gray-100 min-h-screen relative">
+<body>
 
-  <!-- Scanline overlay -->
-  <div class="fixed inset-0 pointer-events-none z-50 scanlines"></div>
+<a href="#main" class="skip-link">Skip to content</a>
 
-  <!-- Header / Navbar -->
-  <header class="w-full z-40 sticky top-0 bg-gray-950/90 backdrop-blur border-b border-cyan-900">
-    <nav class="max-w-5xl mx-auto flex items-center justify-between px-4 py-3">
-      <div class="flex items-center gap-2">
-        <!-- Cybersecurity SVG logo -->
-        <span class="inline-block w-8 h-8">
-          <svg viewBox="0 0 32 32" fill="none" class="w-8 h-8" aria-hidden="true">
-            <circle cx="16" cy="16" r="15" stroke="#0ff" stroke-width="2"/>
-            <path d="M8 16a8 8 0 0 1 16 0" stroke="#0ff" stroke-width="2" fill="none"/>
-            <circle cx="16" cy="16" r="3" fill="#0ff" />
-          </svg>
-        </span>
-        <span class="font-extrabold text-xl tracking-tight neon-pulse">Austin Dachel</span>
-      </div>
-      <button id="nav-toggle" class="md:hidden p-2 rounded focus-ring" aria-label="Open navigation">
-        <!-- Hamburger icon -->
-        <svg class="w-7 h-7" fill="none" stroke="#0ff" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-      </button>
-      <ul id="nav-menu" class="hidden md:flex gap-6 items-center font-semibold text-cyan-300">
-        <li><a href="#home" class="hover:text-cyan-400 focus-ring">Home</a></li>
-        <li><a href="#about" class="hover:text-cyan-400 focus-ring">About</a></li>
-        <li><a href="#projects" class="hover:text-cyan-400 focus-ring">Projects</a></li>
-        <li><a href="#links" class="hover:text-cyan-400 focus-ring">Links</a></li>
-        <li><a href="#contact" class="hover:text-cyan-400 focus-ring">Contact</a></li>
-      </ul>
+<header class="statusbar">
+  <div class="wrap">
+    <a href="#top" class="brand">austin dachel</a>
+    <nav class="primary-nav" aria-label="Primary">
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#education">Education</a>
+      <a href="#contact">Contact</a>
     </nav>
-    <!-- Mobile menu -->
-    <ul id="mobile-menu" class="md:hidden hidden flex-col gap-2 px-6 pb-4 font-semibold text-cyan-300 bg-gray-950/95">
-      <li><a href="#home" class="block py-2 hover:text-cyan-400 focus-ring">Home</a></li>
-      <li><a href="#about" class="block py-2 hover:text-cyan-400 focus-ring">About</a></li>
-      <li><a href="#projects" class="block py-2 hover:text-cyan-400 focus-ring">Projects</a></li>
-      <li><a href="#links" class="block py-2 hover:text-cyan-400 focus-ring">Links</a></li>
-      <li><a href="#contact" class="block py-2 hover:text-cyan-400 focus-ring">Contact</a></li>
-    </ul>
-  </header>
-
-  <!-- Hero Section -->
-  <section id="home" class="relative flex flex-col md:flex-row items-center justify-between max-w-5xl mx-auto px-4 py-20 gap-10">
-    <div class="flex-1 z-10">
-      <h1 class="text-4xl md:text-5xl font-extrabold mb-4 neon-pulse">Hi, I'm Austin,</h1>
-      <p class="text-xl md:text-2xl font-semibold text-cyan-300 mb-6">Cybersecurity Enthusiast & Problem Solver</p>
-      <p class="mb-8 text-gray-300 max-w-lg">Welcome to my portfolio where I build, break, and secure digital systems.</p>
-      <a href="#projects" class="inline-block px-6 py-3 rounded-lg neon-border bg-cyan-900/30 text-cyan-200 font-bold hover:bg-cyan-800/60 transition focus-ring">View My Projects</a>
+    <div class="status-right">
+      <span class="status-available"><span class="status-dot" aria-hidden="true"></span>Open to opportunities</span>
+      <span id="localtime">Denver, CO</span>
     </div>
-    <div class="flex-1 flex items-center justify-center relative z-10">
-      <!-- Cybersecurity visual: terminal window with binary code -->
-      <div class="relative w-80 h-56 bg-gray-900 rounded-xl neon-border shadow-lg overflow-hidden scanlines">
-        <div class="absolute top-0 left-0 w-full h-8 bg-cyan-900/40 flex items-center px-4">
-          <span class="w-3 h-3 rounded-full bg-red-500 mr-2"></span>
-          <span class="w-3 h-3 rounded-full bg-yellow-400 mr-2"></span>
-          <span class="w-3 h-3 rounded-full bg-green-500"></span>
-        </div>
-        <pre class="terminal-font text-cyan-300 text-xs pt-10 px-4 h-full overflow-x-auto hide-scrollbar" aria-label="Animated binary code">
-<span id="binary-hero"></span>
-        </pre>
-      </div>
-    </div>
-  </section>
-
-  <!-- About Section -->
-  <section id="about" class="max-w-4xl mx-auto px-4 py-16 flex flex-col md:flex-row items-center gap-10">
-    <div class="flex-shrink-0">
-      <!-- Placeholder headshot -->
-  <!-- Headshot -->
-  <div class="w-40 h-40 rounded-full neon-border bg-gradient-to-br from-cyan-800 to-gray-900 overflow-hidden relative">
-    <img
-      src="profilePic.jpeg"
-      alt="Headshot of Austin Dachel"
-      class="w-full h-full object-cover object-top"
-    />
+    <button id="nav-toggle" aria-label="Open navigation" aria-expanded="false" aria-controls="mobile-menu"><span></span></button>
   </div>
+  <nav id="mobile-menu" aria-label="Mobile">
+    <a href="#experience">Experience</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#education">Education</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
 
-    </div>
+<main id="main">
+
+  <!-- Hero -->
+  <section id="top" class="hero wrap">
     <div>
-      <h2 class="text-3xl font-bold mb-4 text-cyan-300">About Me</h2>
-      <p class="mb-3 text-gray-200">I’m passionate about cybersecurity, especially being hands-on with things like ethical hacking, digging into digital forensics, and figuring out how to build systems that actually stay secure. What started as curiosity has turned into a career path focused on learning fast, solving problems, and staying one step ahead of threats.</p>
-      <p class="mb-3 text-gray-200">I’ve spent time working on:</p>
-      <ul class="list-disc list-inside text-gray-400 mb-2">
-        <li>Penetration Testing & Vulnerability Assessments</li>
-        <li>Network Security & Monitoring</li>
-        <li>Workflow Automation</li>
-        </ul> <p class="mb-3 text-gray-200">I stay active in the community by being a participating member of:</p>
-        <ul class="list-disc list-inside text-gray-400 mb-2">
-        <li>ISACA</li>
-        <li>OWASP</li>
-        <li>ISC2</li>
-        </ul>
-        <p class="mb-3 text-gray-200">I have my degree in Computer Information Systems with a concentration in Cybersecurity:</p>
-        <ul class="list-disc list-inside text-gray-400 mb-2">
-          <li>Relevant Coursework:
-            <ul class="list-disc list-inside ml-5 mt-1"> 
-              <li>Information Systems Security</li>
-              <li>Systems Analysis and Design</li>
-              <li>Information Systems Security Tools & Techniques</li>
-              <li>Information Systems Security & Information</li>
-            </ul>
-          </li>
-        </ul>
-    </div>
-    </section>
-
-  <!-- Projects Section -->
-  <section id="projects" class="max-w-5xl mx-auto px-4 py-16">
-    <h2 class="text-3xl font-bold mb-8 text-cyan-300">Projects</h2>
-    <div class="grid md:grid-cols-3 sm:grid-cols-2 gap-8">
-      <!-- Project Card 1 -->
-      <div class="project-card bg-gray-900 rounded-xl neon-border p-6 transition-all duration-200 hover:shadow-xl flex flex-col">
-        <div class="flex items-center gap-2 mb-3">
-          <!-- Lock SVG -->
-          <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <rect x="5" y="11" width="14" height="8" rx="3" stroke="currentColor"/>
-            <path d="M8 11V7a4 4 0 1 1 8 0v4" stroke="currentColor"/>
-          </svg>
-          <span class="font-semibold text-lg">Vulnerability Scanner</span>
-        </div>
-        <p class="text-gray-300 mb-4 flex-1">A Python-based vulnerability scanner that detects common web application flaws and generates detailed reports.</p>
-        <a href="https://github.com/ausdac/vulnerability-scanner" target="_blank" class="mt-auto inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan-800/60 hover:bg-cyan-700 text-cyan-100 font-semibold transition focus-ring">
-          <span>View Project</span>
-          <!-- Arrow SVG -->
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M5 12h14M13 6l6 6-6 6"/>
-          </svg>
-        </a>
-      </div>
-      <!-- Project Card 2 -->
-      <div class="project-card bg-gray-900 rounded-xl neon-border p-6 transition-all duration-200 hover:shadow-xl flex flex-col">
-        <div class="flex items-center gap-2 mb-3">
-          <!-- Terminal SVG -->
-          <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor"/>
-            <path d="M8 9l3 3-3 3" stroke="currentColor"/>
-            <path d="M13 15h3" stroke="currentColor"/>
-          </svg>
-          <span class="font-semibold text-lg">CTF Toolkit</span>
-        </div>
-        <p class="text-gray-300 mb-4 flex-1">A collection of scripts and tools for Capture The Flag competitions, including encoders, decoders, and exploit templates.</p>
-        <a href="https://github.com/ausdac/ctf-toolkit" target="_blank" class="mt-auto inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan-800/60 hover:bg-cyan-700 text-cyan-100 font-semibold transition focus-ring">
-          <span>View Project</span>
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M5 12h14M13 6l6 6-6 6"/>
-          </svg>
-        </a>
-      </div>
-      <!-- Project Card 3 -->
-      <div class="project-card bg-gray-900 rounded-xl neon-border p-6 transition-all duration-200 hover:shadow-xl flex flex-col">
-        <div class="flex items-center gap-2 mb-3">
-          <!-- Network SVG -->
-          <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="3" stroke="currentColor"/>
-            <path d="M12 3v6M12 15v6M3 12h6M15 12h6" stroke="currentColor"/>
-          </svg>
-          <span class="font-semibold text-lg">Network Visualization</span>
-        </div>
-        <p class="text-gray-300 mb-4 flex-1">An interactive network visualization tool to map and analyze network traffic and potential attack paths.</p>
-        <a href="https://github.com/ausdac/network-visualizer" target="_blank" class="mt-auto inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cyan-800/60 hover:bg-cyan-700 text-cyan-100 font-semibold transition focus-ring">
-          <span>View Project</span>
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M5 12h14M13 6l6 6-6 6"/>
-          </svg>
-        </a>
+      <p class="eyebrow">Linux &amp; Network Systems Engineer</p>
+      <h1>Austin Dachel</h1>
+      <p class="role">Infrastructure &amp; automation → cloud &amp; DevSecOps</p>
+      <p class="pitch">I build and secure the infrastructure other engineers build on. From rack, to routing table, to runbook. Currently moving that background toward cloud security.</p>
+      <div class="btn-row">
+        <a href="DachelResume.pdf" class="btn btn-primary" target="_blank" rel="noopener">Download Resume</a>
+        <a href="#experience" class="btn btn-secondary">View Experience</a>
       </div>
     </div>
-    <!-- Terminal/code editor inspired project details -->
-    <div class="mt-12 bg-gray-900 rounded-xl neon-border p-6 scanlines">
-      <div class="flex items-center gap-2 mb-3">
-        <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <rect x="3" y="4" width="18" height="16" rx="2" stroke="currentColor"/>
-        </svg>
-        <span class="font-semibold text-lg">Sample Code Snippet</span>
+    <div class="spec-card">
+      <img src="profilePic.jpeg" alt="Headshot of Austin Dachel" class="spec-photo" />
+      <div class="spec-rows">
+        <div class="spec-row"><span class="k">focus</span><span class="v">linux / network / cloud</span></div>
+        <div class="spec-row"><span class="k">based</span><span class="v">denver, co</span></div>
+        <div class="spec-row"><span class="k">target</span><span class="v">cloud security engineer</span></div>
+        <div class="spec-row"><span class="k">status</span><span class="v status"><span class="status-dot" aria-hidden="true"></span>available</span></div>
       </div>
-      <pre class="terminal-font text-cyan-200 text-xs overflow-x-auto hide-scrollbar" aria-label="Sample code block">
-<span class="text-cyan-400"># Python: Simple port scanner</span>
-<span class="text-cyan-200">import socket</span>
-<span class="text-cyan-200">for port in range(20, 1024):</span>
-<span class="text-cyan-200">    s = socket.socket()</span>
-<span class="text-cyan-200">    result = s.connect_ex(('127.0.0.1', port))</span>
-<span class="text-cyan-200">    if result == 0:</span>
-<span class="text-green-400">        print(f"Port {port} is open")</span>
-<span class="text-cyan-200">    s.close()</span>
-      </pre>
     </div>
   </section>
 
-  <!-- Links/Connect Section -->
-  <section id="links" class="max-w-4xl mx-auto px-4 py-16">
-    <h2 class="text-3xl font-bold mb-8 text-cyan-300">Connect</h2>
-    <div class="flex flex-col md:flex-row gap-8">
-      <a href="https://www.linkedin.com/in/austin-dachel-8263ba149" target="_blank" class="flex-1 flex items-center gap-4 px-6 py-4 rounded-xl neon-border bg-cyan-900/30 hover:bg-cyan-800/60 transition text-cyan-100 font-semibold text-lg focus-ring">
-        <!-- LinkedIn SVG -->
-        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.28c-.97 0-1.75-.79-1.75-1.75s.78-1.75 1.75-1.75 1.75.79 1.75 1.75-.78 1.75-1.75 1.75zm15.5 11.28h-3v-5.6c0-1.34-.03-3.07-1.87-3.07-1.87 0-2.16 1.46-2.16 2.97v5.7h-3v-10h2.89v1.36h.04c.4-.75 1.37-1.54 2.82-1.54 3.01 0 3.57 1.98 3.57 4.56v5.62z"/>
-        </svg>
-        Connect on LinkedIn
-      </a>
-      <a href="ISDachelResume.pdf" target="_blank" class="flex-1 flex items-center gap-4 px-6 py-4 rounded-xl neon-border bg-cyan-900/30 hover:bg-cyan-800/60 transition text-cyan-100 font-semibold text-lg focus-ring">
-        <!-- Resume SVG -->
-        <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-          <rect x="4" y="2" width="16" height="20" rx="2" stroke="currentColor"/>
-          <path d="M8 6h8M8 10h8M8 14h4" stroke="currentColor"/>
-        </svg>
-        Download My Resume
-      </a>
-      <a href="https://github.com/ausdac" target="_blank" class="flex-1 flex items-center gap-4 px-6 py-4 rounded-xl neon-border bg-cyan-900/30 hover:bg-cyan-800/60 transition text-cyan-100 font-semibold text-lg focus-ring">
-        <!-- GitHub SVG -->
-        <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.263.82-.582 0-.288-.012-1.243-.018-2.25-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729 1.205.085 1.84 1.237 1.84 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.606-2.665-.304-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.236-3.22-.124-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 0 1 3-.404c1.02.005 2.05.138 3 .404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.873.12 3.176.77.84 1.235 1.91 1.235 3.22 0 4.61-2.803 5.624-5.475 5.92.43.37.823 1.102.823 2.222 0 1.606-.015 2.898-.015 3.293 0 .322.216.699.825.58C20.565 21.796 24 17.297 24 12c0-6.63-5.37-12-12-12z"/>
-        </svg>
-        Explore My GitHub
-      </a>
+  <!-- Experience -->
+  <section id="experience" class="wrap reveal">
+    <p class="eyebrow">Career</p>
+    <h2 class="section-title">Experience</h2>
+    <div class="job">
+      <div class="job-head">
+        <h3><span class="placeholder">Linux Systems Engineer</span> · <span class="company">Bet365</span></h3>
+        <span class="dates placeholder"> July 2026 – Present</span>
+      </div>
+      <ul>
+        <li>Manage and maintain enterprise Puppet infrastructure, with configuration tracked and deployed via Git.</li>
+        <li>Administer Canonical Landscape for OS imaging and fleet management across end-user systems.</li>
+        <li>Build and maintain AppArmor security profiles, enforced and version-controlled through Puppet.</li>
+        <li>Maintain in-depth operational knowledge of Linux internals, including user and group management, file system management (LVM, RAID), and process management.</li>
+        <li>Administer service management (systemd, SysVinit) and perform kernel tuning to optimize system performance and stability.</li>
+        <li>Support virtualization (VMware vSphere, KVM) and containerization (Docker, Kubernetes) platforms</li>
+        <li>Apply Linux security best practices, including SELinux, granular user permissions, SSH hardening, and vulnerability management.</li>
+        <li>Monitor system health and availability using Nagios, Zabbix, Prometheus, Grafana, and Splunk.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <div class="job-head">
+        <h3><span class="placeholder">Systems Engineer</span> · <span class="company">Ateme</span></h3>
+        <span class="dates placeholder"> April 2023 – July 2026</span>
+      </div>
+      <ul>
+        <li>Owned lab and systems infrastructure for a multi-rack broadcast and media environment spanning Fortinet, Cisco, FS, UniFi, and HPE hardware.</li>
+        <li>Led a full network documentation and handoff project — runbooks, topology diagrams, and draw.io reference files covering the entire lab environment.</li>
+        <li>Stood up a site-to-site IPsec VPN tunnel (Viamedia VSP 2200) from scratch, resolving PSK mismatches, RPF drops, and routing conflicts to reach confirmed bidirectional traffic.</li>
+        <li>Replaced a manual Excel/Salesforce logistics workflow with a NocoDB-based inventory system built on a proper relational schema.</li>
+        <li>Built an internal bare-metal provisioning tool (Ansible + Bash) with Redfish API integration across HPE, Dell, and Supermicro hardware.</li>
+      </ul>
     </div>
   </section>
 
-  <!-- Contact Section -->
-  <section id="contact" class="max-w-3xl mx-auto px-4 py-16">
-    <h2 class="text-3xl font-bold mb-6 text-cyan-300">Contact</h2>
-    <div class="bg-gray-900 rounded-xl neon-border p-6 flex flex-col md:flex-row items-center gap-6">
-      <svg class="w-10 h-10 text-cyan-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <path d="M21 8V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2" stroke="currentColor"/>
-        <rect x="3" y="8" width="18" height="12" rx="2" stroke="currentColor"/>
-        <path d="M3 8l9 6 9-6" stroke="currentColor"/>
-      </svg>
+  <!-- Skills -->
+  <section id="skills" class="wrap reveal">
+    <p class="eyebrow">Stack</p>
+    <h2 class="section-title">Skills</h2>
+    <div class="yaml-card">
+      <span class="yaml-tab">skills.yaml</span>
+      <pre class="yaml"><span class="yk">systems:</span>
+  - linux administration
+  - bash / scripting
+  - server provisioning &amp; imaging
+
+<span class="yk">networking:</span>
+  - fortigate, cisco, unifi, fs
+  - vpn &amp; ipsec tunneling
+  - dns, dhcp, vlans, routing
+
+<span class="yk">automation:</span>
+  - ansible
+  - puppet
+  - terraform
+  - docker
+  - kubernetes
+
+<span class="yk">cloud:</span> <span class="yc"> </span>
+  - GCP Associate Cloud Engineer
+  - GCP Professional Cloud Security Engineer (in progress)
+  </pre>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="wrap reveal">
+    <p class="eyebrow">Selected work</p>
+    <h2 class="section-title">Projects</h2>
+    <div class="project-grid">
+
+      <div class="project">
+        <h3>Bare-metal Provisioning Tool</h3>
+        <div class="tags"><span class="tag">Ansible</span><span class="tag">Bash</span><span class="tag">Redfish API</span></div>
+        <p>Internal deployment tool automating OS provisioning across HPE, Dell, and Supermicro hardware via the Redfish API.</p>
+        <div class="project-note">Employer project — details on request</div>
+      </div>
+
+      <div class="project">
+        <h3>Site-to-Site IPsec Tunnel POC</h3>
+        <div class="tags"><span class="tag">FortiGate</span><span class="tag">IPsec</span><span class="tag">Routing</span></div>
+        <p>Built a Viamedia VSP 2200 tunnel from scratch — debugged PSK mismatches, RPF drops, and routing conflicts to confirmed bidirectional FTP traffic.</p>
+        <div class="project-note">Employer project — details on request</div>
+      </div>
+
+      <div class="project">
+        <h3>NocoDB Inventory System</h3>
+        <div class="tags"><span class="tag">NocoDB</span><span class="tag">Relational Design</span></div>
+        <p>Replaced a manual Excel/Salesforce logistics workflow with a relational inventory schema for lab equipment tracking.</p>
+        <div class="project-note">Employer project — details on request</div>
+      </div>
+
+      <div class="project">
+        <h3>Network Documentation &amp; Handoff</h3>
+        <div class="tags"><span class="tag">draw.io</span><span class="tag">Runbooks</span></div>
+        <p>Full topology diagrams and operational runbooks for a multi-rack broadcast lab, built for a clean team handoff.</p>
+        <div class="project-note">Employer project — details on request</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Education -->
+  <section id="education" class="wrap reveal">
+    <p class="eyebrow">Background</p>
+    <h2 class="section-title">Education</h2>
+
+    <div class="edu-item">
       <div>
-        <p class="font-semibold text-cyan-200 mb-1">Get in touch</p>
-        <a href="mailto:austinD.projects@proton.me" class="text-cyan-400 underline hover:text-cyan-200 focus-ring">austinD.projects@proton.me</a>
+        <h3>M.S., Cybersecurity &amp; Information Assurance</h3>
+        <div class="school">University of Colorado Denver</div>
       </div>
+      <div class="when placeholder">In progress — expected May 2027</div>
+    </div>
+    <div class="edu-item">
+      <div>
+        <h3>B.S., Computer Information Systems</h3>
+        <div class="school">Concentration in Cybersecurity</div>
+      </div>
+      <div class="when">Completed</div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="w-full py-6 text-center text-gray-500 text-sm border-t border-cyan-900 bg-gray-950/80">
-    &copy; <span class="text-cyan-400">2025 Austin Dachel.</span>
-  </footer>
+  <!-- Contact -->
+  <section id="contact" class="wrap reveal">
+    <p class="eyebrow">Get in touch</p>
+    <h2 class="section-title">Contact</h2>
+    <div class="contact-row">
+      <a class="contact-link" href="https://github.com/ausdac" target="_blank" rel="noopener">
+        <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.263.82-.582 0-.288-.012-1.243-.018-2.25-3.338.726-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729 1.205.085 1.84 1.237 1.84 1.237 1.07 1.834 2.807 1.304 3.492.997.108-.775.418-1.305.762-1.606-2.665-.304-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.236-3.22-.124-.303-.535-1.523.117-3.176 0 0 1.008-.322 3.3 1.23a11.5 11.5 0 0 1 3-.404c1.02.005 2.05.138 3 .404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.873.12 3.176.77.84 1.235 1.91 1.235 3.22 0 4.61-2.803 5.624-5.475 5.92.43.37.823 1.102.823 2.222 0 1.606-.015 2.898-.015 3.293 0 .322.216.699.825.58C20.565 21.796 24 17.297 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <a class="contact-link" href="https://www.linkedin.com/in/austin-dachel-8263ba149" target="_blank" rel="noopener">
+        <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.28c-.97 0-1.75-.79-1.75-1.75s.78-1.75 1.75-1.75 1.75.79 1.75 1.75-.78 1.75-1.75 1.75zm15.5 11.28h-3v-5.6c0-1.34-.03-3.07-1.87-3.07-1.87 0-2.16 1.46-2.16 2.97v5.7h-3v-10h2.89v1.36h.04c.4-.75 1.37-1.54 2.82-1.54 3.01 0 3.57 1.98 3.57 4.56v5.62z"/></svg>
+        LinkedIn
+      </a>
+      <a class="contact-link" href="mailto:austinD.projects@proton.me">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2"/><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M3 8l9 6 9-6"/></svg>
+        Email
+      </a>
+      <a class="contact-link" href="DachelResume.pdf" target="_blank" rel="noopener">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h4"/></svg>
+        Resume
+      </a>
+    </div>
+  </section>
 
-  <!-- JavaScript for interactivity and effects -->
-  <script>
-    // Mobile nav toggle
-    const navToggle = document.getElementById('nav-toggle');
-    const navMenu = document.getElementById('nav-menu');
-    const mobileMenu = document.getElementById('mobile-menu');
-    navToggle.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-    });
-    // Close mobile menu on link click
-    mobileMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
-    });
+</main>
 
-    // Animated binary code in hero section
-    const binaryHero = document.getElementById('binary-hero');
-    function randomBinaryLine(length) {
-      let s = '';
-      for (let i = 0; i < length; i++) s += Math.random() > 0.5 ? '1' : '0';
-      return s;
-    }
-    let binaryLines = Array(8).fill('').map(() => randomBinaryLine(38));
-    function animateBinary() {
-      binaryLines.shift();
-      binaryLines.push(randomBinaryLine(38));
-      binaryHero.innerHTML = binaryLines.map(line => `<span>${line}</span>`).join('<br>');
-    }
-    setInterval(animateBinary, 120);
+<footer>&copy; 2026 Austin Dachel</footer>
 
-    // Glitch effect on hover for .glitch elements
-    document.querySelectorAll('.glitch').forEach(el => {
-      el.addEventListener('mouseenter', () => el.style.animationDuration = '0.3s');
-      el.addEventListener('mouseleave', () => el.style.animationDuration = '1.5s');
+<script>
+  // Mobile nav
+  const navToggle = document.getElementById('nav-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  navToggle.addEventListener('click', () => {
+    const open = mobileMenu.classList.toggle('open');
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      navToggle.setAttribute('aria-expanded', 'false');
     });
-  </script>
+  });
+
+  // Live Denver time
+  const timeEl = document.getElementById('localtime');
+  function updateClock(){
+    const now = new Date();
+    const fmt = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/Denver', hour: 'numeric', minute: '2-digit'
+    }).format(now);
+    timeEl.textContent = `Denver, CO · ${fmt} MT`;
+  }
+  updateClock();
+  setInterval(updateClock, 30000);
+
+  // Scroll reveal
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealEls = document.querySelectorAll('.reveal');
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    revealEls.forEach(el => el.classList.add('in'));
+  } else {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => io.observe(el));
+  }
+</script>
+
 </body>
-
-</html> 
+</html>
